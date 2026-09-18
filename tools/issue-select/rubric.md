@@ -1,0 +1,23 @@
+# Rubric: is this a good first issue?
+
+Grade every check `pass`, `fail`, or `unclear` from the evidence named in that row. In eval mode use only the bundle. Recency is measured against the bundle capture date, not today. In live mode measure against today. Do not invent file counts, star thresholds, or other signals the evidence column does not name.
+
+## Checks
+
+| Check | Evidence | Pass condition | Weight |
+|---|---|---|---|
+| maintainer-active | Repo facts: the dated list under "last 5 default-branch commits", plus `archived:` on the repo line | Pass if `archived:` is `no` and at least one listed default-branch commit is dated within 90 days of the capture date (live: today). A `[bot]` author counts only when that commit message shows it merged a human pull request. Fail if the repo is archived, or if every listed commit is older than 90 days, or if the only recent commits are bot-authored and do not merge a human PR. | required |
+| repo-in-use | Repo facts: `archived:`, "latest release", "last push to any branch", and the same default-branch commit list | Pass if `archived:` is `no` AND at least one of: (1) latest release is a dated release within 365 days of capture, or (2) last push to any branch is within 90 days of capture, or (3) a default-branch commit is within 90 days of capture. "none published" is not a fail by itself when (2) or (3) holds. Stars and open-issue counts are not evidence for this check. Fail if archived, or if release, last push, and default-branch commits are all older than those windows (or missing). | required |
+| scope-fits | Issue title and body, the full Comments section, labels, and "linked PRs" under Repo facts | Pass if the work is one bounded change a newcomer could ship from the text: a named bug/behavior, a named docs home, or a small feature a maintainer has already specified. A short body still passes when the asked-for change is bounded (including a short maintainer-filed bug). Fail if any of: (1) the issue is a megaissue, tracking issue, umbrella, or a list of many independent sub-items meant to be split; (2) the work is codebase-wide or "incrementally across the codebase" rather than one change; (3) the thread still has an unsettled design debate (maintainers disagree, or no MEMBER/OWNER/COLLABORATOR comment has chosen an approach) or the issue has been open for years with closed unmerged PRs and no settled spec; (4) the ask is a product decision still open in the text (new first-class branding/UI with asset TBD, no maintainer sign-off); (5) it is a usage/support question, not a contribution; (6) a maintainer says the fix touches core internals. Do not grade file counts; bundles usually do not list them. | required |
+| unclaimed | Repo facts: "this issue: assignees:" and "linked PRs:" (with state), plus Comments | Pass if assignees is `none` AND no linked PR is `open` AND no non-bot comment in the last 180 days claims the work ("I'll take this", "working on this", "I created the pull request", "not looking for any other contributions") unless a later MEMBER/OWNER/COLLABORATOR comment invites new takers. Closed or merged linked PRs are not an active claim. Bot nudges and stale claims older than 180 days do not fail. Fail if anyone is assigned, any linked PR is open, or a fresh human claim is still standing. | required |
+| ai-policy | Repo facts: the "contribution policy" line | Pass if the policy is silent, missing, or only sets conditions (disclose AI, understand/test/review the change, AGENTS.md present, "assistive AI allowed", "tools welcome if you are responsible"). Fail only on an outright ban of AI-generated code and/or documentation with no assistive-use exception ("we do not accept AI-generated code or documentation"). "Strongly discourages" plus a human-review requirement is a condition, not a ban. Unclear (line absent) counts as pass: silence is not a restriction. | required |
+| good-first-issue-signal | Labels on the Issue heading, plus Comments | Pass if a label is `good first issue` / `good-first-issue` / `easy` / `Easy to Fix`, or a MEMBER/OWNER/COLLABORATOR comment invites a newcomer to take it. Else fail. Preferred only: never changes accept vs reject. | preferred |
+
+## Verdict rule
+
+Accept only when every **required** check is `pass`.
+
+- Any required `fail` → `reject`.
+- Any required `unclear` → `reject` (treat unclear as fail), except `ai-policy`, where a missing policy line is `pass`.
+- Preferred checks never change the verdict. They only rank issues that already accepted.
+- There is no third verdict and no "low confidence" verdict: the output is `accept` or `reject`.
