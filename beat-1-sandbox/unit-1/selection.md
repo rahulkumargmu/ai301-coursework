@@ -96,7 +96,6 @@ All three candidates are from the scoped repo (`codepath/pathreview-ai301-fa26-s
   }
 ]
 ```
-```
 
 ---
 
