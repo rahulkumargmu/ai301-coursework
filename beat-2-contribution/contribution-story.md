@@ -55,10 +55,9 @@ happened; these entries are the toolkit's own timeline.
 All four entries are graded. Keep every heading below, and fill each
 one in the week it belongs to.
 
-**Unit 5: [one line on the tool work]**
+**Unit 5: Built issue-scout with three gh queries and ranking rules, ran a $1 scan, patched the rubric and the strategy**
 
-[2-4 sentences: what you built (the scout, your strategy), what broke
-or fell short, what changed because of it.]
+I turned my Unit 1 issue-select skill into issue-scout: three `gh search issues` queries taken from my fit profile (Python bug, docs, and FastAPI good first issues, sorted by recently updated), free ranking rules (drop assigned issues, OWNER-filed issues, feature or frontend labels, and 5+ comments; one issue per repo; fewest comments first), and my rubric grading the top 5. The first $1 scan accepted 2 of 5 (orchestrator-core#1872 and Lespass#450). But two of the rejects were plain from the issue body alone (one empty, one a 14-item umbrella checklist), and the ai-policy check called both accepts "silent" when orchestrator-core keeps its guidelines in `docs/contributing/` and Lespass has a root `GUIDELINES.md`. I added `body` to the queries with rules that drop empty bodies and 6+ task-box checklists (re-running the free stage showed both of those rejects now drop out), and changed the ai-policy check to search the whole repo tree and name the files it read.
 
 **Unit 6: [one line on the tool work]**
 
