@@ -1,4 +1,4 @@
-# Contribution: [Issue Title]
+# Contribution: Quand une adhésion est annulé, l'affichage de la date d'expiration n'est pas clair
 
 Path: `beat-2-contribution/contribution-story.md`
 
@@ -8,11 +8,10 @@ format criteria grade exactly that. Your course repo link is the whole submissio
 files and no evidence uploads are part of Assignment 5.
 
 **Contribution Number:** [1]
-**Student:** [Student name]
-**GitHub Username:** [your GitHub username, exactly as it appears on your profile - no @, no
-profile URL. Your comments upstream are identified by this name.]
-**Issue:** [GitHub issue link]
-**Pull Request:** [GitHub PR link, once opened]
+**Student:** Rahul Kumar
+**GitHub Username:** rahulkumargmu
+**Issue:** https://github.com/TiBillet/Lespass/issues/450
+**Pull Request:** not opened yet
 
 One repository, built across units 5 to 8, telling the whole story of your real
 contribution. Fill it as you work, not at the end — the sections below ask for evidence that
@@ -59,11 +58,9 @@ one in the week it belongs to.
 
 I turned my Unit 1 issue-select skill into issue-scout: three `gh search issues` queries taken from my fit profile (Python bug, docs, and FastAPI good first issues, sorted by recently updated), free ranking rules (drop assigned issues, OWNER-filed issues, feature or frontend labels, and 5+ comments; one issue per repo; fewest comments first), and my rubric grading the top 5. The first $1 scan accepted 2 of 5 (orchestrator-core#1872 and Lespass#450). But two of the rejects were plain from the issue body alone (one empty, one a 14-item umbrella checklist), and the ai-policy check called both accepts "silent" when orchestrator-core keeps its guidelines in `docs/contributing/` and Lespass has a root `GUIDELINES.md`. I added `body` to the queries with rules that drop empty bodies and 6+ task-box checklists (re-running the free stage showed both of those rejects now drop out), and changed the ai-policy check to search the whole repo tree and name the files it read.
 
-**Unit 6: [one line on the tool work]**
+**Unit 6: Installed the voice guard, patched issue-scout's scope check, and wrote a local memory file for Lespass**
 
-[2-4 sentences: the voice-guard, the repo-memory file. What broke or
-fell short, and what changed because of it. "Nothing broke" counts when
-it is true - say how you know.]
+I added an Upstream section to my voice guide and installed the voice guard as a Claude Code hook. The wiring test stopped `gh issue comment --help` with "no body the guard can read", and the same hook then passed the claim on Lespass#450 before `gh` posted it. The first claim draft was too vague about the first step, so I rewrote it to name a Django shell print of `membership.deadline`. `CLAUDE.local.md` in my Lespass fork is kept out of git with `.git/info/exclude`; `git status` does not list it. Repro-check rejected the first reproduction report because I had only read the cancel code, and the Docker daemon was not running, so the admin page was never opened.
 
 **Unit 7: [one line on the tool work]**
 
@@ -79,24 +76,18 @@ drafted, what you did with the draft.]
 
 ## Why I Chose This Issue
 
-[1-2 paragraphs in your own words: how you searched, what your scan
-surfaced, what your scout's verdict said, why this issue fits your
-profile, and what you hope to learn. If your scout's verdict on it
-was reject and you chose it anyway, say so here and say why; choosing
-against your own tool silently is what loses points. Close with an
-honest read of the tool itself: where the scout fell short on a real
-wild search and what you changed or would change, or what convinced
-you it held up. **Record the link to your claim comment in this section too.**
-Not claimed yet? Write `claim pending` and today's date where the link goes,
-and add the link the moment your claim lands.]
+Last week's scan accepted two issues. On 2026-10-21 I graded them again after replacing `scope-fits` with `scope-feasible`. workfloworchestrator/orchestrator-core#1872 came back reject: nightcityblade had already claimed it, and merged PR #2021 closed it. TiBillet/Lespass#450 came back accept, difficulty moderate. It is one Python/Django bug: cancelling a membership from the admin leaves `deadline` set, so the date on screen can still be in the future. Nobody is assigned and there are no other comments. I want a small bug I can finish in two weeks, in a project where maintainers are actually pushing (this repo was pushed the same day). The issue text is in French, which I can read with help, and the stack is heavier than a one-file fix. I hope to learn how this project separates "access is cut" (`is_valid()` is false for `ADMIN_CANCELED`) from "the date on the card".
+
+The scout was right that #1872 was no longer free, and right that #450 is one piece of work. It was wrong last week to call both repos silent on contributing docs. It also cannot see that the issue author already pushed `[Fix issue #450]` commits on 2026-09-30; those commits are on main and are not a claim comment, so `unclaimed` still passed. I have not run the admin page yet.
+
+Claim comment: https://github.com/TiBillet/Lespass/issues/450#issuecomment-6330574158
 
 **Toolkit**
 
-- Tool: issue-scout (your scout: your search strategy, your rubric),
-  and how you used it
-- What it produced: [the scan and its verdict on this issue, described]
-- Difficulties: [where it fell short, or "none met" if none did]
-- What changed: [what you patched or would update, or "nothing"]
+- Tool: issue-scout, used in direct grade mode on the two issues last week's scan accepted, after the scope patch.
+- What it produced: Lespass#450 accept, difficulty moderate. orchestrator-core#1872 reject on `unclaimed`.
+- Difficulties: `unclaimed` only reads assignees, comments, and linked PRs. It did not treat the author's September fix commits as a claim, and it does not know the bug may already have been reworked.
+- What changed: On 2026-10-21 I replaced `scope-fits` with `scope-feasible`. The old check rejected any open edge. The new check fails only when there is no single piece of work, and an open edge becomes a difficulty note instead of a reject.
 
 ---
 
@@ -131,31 +122,38 @@ and add the link the moment your claim lands.]
 
 **Environment Setup**
 
-[What a stranger would need to stand this up: your operating system,
-the relevant versions (language, runtime, package manager, the project
-itself), and how you set the project up. Then the challenges you faced
-and how you solved them, or that none came up.]
+macOS, Python 3.11 on the host. Fork `rahulkumargmu/Lespass`, `main` at `9bb3091` (2026-10-21). Docker CLI 27.3.1 is installed, but the daemon is not running: `docker ps` returned `Cannot connect to the Docker daemon at unix:///Users/siddharthkumar/.docker/run/docker.sock`. Lespass tests run only inside `docker exec lespass_django`, and `GUIDELINES.md` says not to run pytest on the host. I did not copy `env_example` to `.env` or run `docker compose up`.
 
 **Steps to Reproduce**
 
-1. [Step 1]
-2. [Step 2]
-3. [Observed result]
+1. From the clone, print the admin-cancel block, the `ADMIN_CANCELED` branch of `is_valid()`, and the admin card's deadline field.
+2. Try `docker ps` so the lab can run the real trigger (create a membership, cancel it in the admin, read `deadline`).
+3. Observed result: the cancel code sets `annulee_le` and `status = ADMIN_CANCELED` and does not assign `deadline`. `is_valid()` returns `False` for that status. The admin card still receives `adhesion.deadline`. The daemon was down, so I never opened the admin page and never printed a live `membership.deadline`.
 
 **Reproduction Evidence**
 
-- **Commit showing reproduction:** [link to commit in your fork]
-- **Screenshots/logs:** [if applicable]
-- **My findings:** [what you discovered during reproduction; an
-  honest, evidenced cannot-reproduce that led you to re-pick or ask
-  the maintainer belongs here and costs you nothing]
+- **Commit showing reproduction:** none
+- **Screenshots/logs:** host read of `main` at `9bb3091`:
+
+```
+6060:                membership.annulee_le = timezone.now()
+6061:                membership.status = Membership.ADMIN_CANCELED
+6062:                membership.save()
+5339:        if self.status == Membership.ADMIN_CANCELED:
+5340:            return False
+1451:                        'deadline': adhesion.deadline,
+```
+
+`docker ps`: `Cannot connect to the Docker daemon at unix:///Users/siddharthkumar/.docker/run/docker.sock.`
+
+- **My findings:** I have not reproduced the future date on screen. The code on current main still leaves `deadline` alone when an admin cancels, and the admin card still displays that field. Access is a separate question: `is_valid()` is already false for `ADMIN_CANCELED`. repro-check rejected this report (`steps-followable` and `behavior-shown`) because the issue's trigger was never run. I am not posting this report on the issue.
 
 **Toolkit**
 
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
+- Tool: repro-check, grading `claim-draft.md` and `repro-draft.md` together.
+- What it produced: reject. The claim checks passed. The report failed because it prints source lines instead of an admin cancel.
+- Difficulties: the Docker daemon is not running, so the lab command in `GUIDELINES.md` cannot start.
+- What changed: nothing in the tool. The report stays as an incomplete attempt until the daemon is up and a membership can be cancelled.
 
 ---
 
