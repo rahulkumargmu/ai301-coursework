@@ -62,13 +62,13 @@ I turned my Unit 1 issue-select skill into issue-scout: three `gh search issues`
 
 I added an Upstream section to my voice guide and installed the voice guard as a Claude Code hook. The wiring test stopped `gh issue comment --help` with "no body the guard can read", and the same hook then passed the claim on Lespass#450 before `gh` posted it. The first claim draft was too vague about the first step, so I rewrote it to name a Django shell print of `membership.deadline`. `CLAUDE.local.md` in my Lespass fork is kept out of git with `.git/info/exclude`; `git status` does not list it. Repro-check rejected the first reproduction report because I had only read the cancel code, and the Docker daemon was not running, so the admin page was never opened.
 
-**Unit 7: Wrote a ship manifest for TiBillet/Lespass and ran its checks by hand; pr-precheck refused my branch because its scope was still the sandbox one**
+**Unit 7: Wrote a ship manifest for TiBillet/Lespass, installed the ship-gate, and got a BLOCK on a 339-file diff that turned out to be my stale local main**
 
-My `ship-manifest.md` has three must-pass rows taken from `GUIDELINES.md` and `tests/README.md` (`manage.py check`, ruff on my new test file, and the three membership test files) and four excluded rows with the date 2026-11-09 and a reason: ruff on all of `models.py` shows the same 9 findings on main, `make test` stops on macOS bash 3.2 (`options_du_terminal[@]: unbound variable`), 4 Stripe tests fail on main with "You did not provide an API key", and `make e2e` needs a Stripe test account. All three must-pass rows exit 0 on my branch. When I asked pr-precheck to grade the branch, it refused: its installed `scope.md` still said `Repo: codepath/pathreview-ai301-fa26-s3`, because the ship-gate install (the step that swaps in the wild scope) was blocked in my Claude Code session by the auto-mode safety check, which stops downloaded scripts that edit `~/.claude/settings.json`. So PR #495 went up through Claude Code with only the voice guard hook in front of it, and I am running `install.py` and `check_gate.py` by hand myself.
+My `ship-manifest.md` has three must-pass rows taken from `GUIDELINES.md` and `tests/README.md` (`manage.py check`, ruff on my new test file, and the three membership test files) and four excluded rows dated 2026-11-09: ruff on all of `models.py` shows the same 9 findings on main, `make test` stops on macOS bash 3.2, 4 Stripe tests fail on main with "You did not provide an API key", and `make e2e` needs a Stripe test account. Before the install, pr-precheck refused to grade the branch because its scope was still the Path Review sandbox; `install.py` swapped in the wild scope on 2026-11-10, after the PR was already open. The first `check_gate.py --branch` run passed all three repo checks, then stopped: "plan-fidelity [fail]: Diff stat is 339 files … Administration/admin_tenant.py (+15)" and "diff-reviewable [fail]: … a commented-out block in Administration/admin/dashboard.py". My branch touches 4 files; the gate diffs against the local `main`, which was still my fork's 2026-10-21 main, 59 commits behind `upstream/main`. I fast-forwarded local `main` to `upstream/main` (`git branch -f main upstream/main`), and the next run said `ship-gate: PASS` with all four pr-precheck checks passing. I changed nothing in the rubric: it was right to reject a diff it could not trace to the plan.
 
-**Unit 8: Installed the PR monitor and wrote my playbook from five merged Lespass PRs**
+**Unit 8: Installed the PR monitor, wrote my playbook from five merged Lespass PRs, and kept its first draft off the thread**
 
-I copied the monitor into `~/.claude/pr-monitor/` and filled the four playbook sections. The staleness numbers come from the repo, not a guess: Lespass has no CONTRIBUTING.md, and the last five merged PRs from outside the core team (#463, #468, #471, #472, #488) got their first maintainer action in 0 to 4 days, so I nudge after 7 quiet days and call a review stalled after 14. My nudge rules start from my voice guide's pings rule ("ping on the repo's clock, with a new fact") and tag only NothRen, who filed #450 and wrote the reverted fix. PR #495 has no maintainer reply yet, so the first full run is mine to read next to the thread before anything is posted.
+The playbook's staleness numbers come from the repo, not a guess: Lespass has no CONTRIBUTING.md, and the last five merged PRs from outside the core team (#463, #468, #471, #472, #488) got their first maintainer action in 0 to 4 days, so I nudge after 7 quiet days and call a review stalled after 14; the nudge rules start from my voice guide's pings rule and tag only NothRen. On 2026-11-10, `monitor.py --state` reported "FEEDBACK-IN: review feedback is in", but the only review on PR #495 was Copilot's automatic notice that it could not review because of a quota limit. The full run drafted a wait note instead of a reply ("Don't post anything on PR #495 today … Check again on 2026-11-17"), so I posted nothing. Because the state line had counted a bot notice as feedback, and the draft said my playbook did not cover re-requesting a Copilot review, I added a Response rule: a bot's notice is not a review round, gets no reply, and I don't re-request Copilot on someone else's repo.
 
 ---
 
@@ -279,6 +279,10 @@ Built the fix (one property, two template footers) and the test file. The admin-
 
 Committed the fix (`fix(adhesion): la carte d'une adhésion annulée par un admin affiche « Annulée le … » (#450)`), pushed `fix/450-cancelled-membership-card` to my fork, posted the reproduction on #450, and opened PR #495 against `main`. Both posts went through Claude Code, and the voice guard hook passed each one.
 
+**2026-11-10**
+
+Ran the ship-gate install in my own terminal, then `check_gate.py --branch`. It blocked on a 339-file diff: my local `main` was my fork's old main, 59 commits behind `upstream/main`, so every upstream commit since 2026-10-21 looked like part of my branch. `git branch -f main upstream/main` brought the diff back to my 4 files, and the second run passed. I added the `locale/` grep the gate's voice note asked for to the PR description. Then ran the PR monitor: `--state` said FEEDBACK-IN because of Copilot's quota notice, the draft was a wait note, and I posted nothing.
+
 **Toolkit**
 
 - Tool: the voice guard. I ran `check_voice.py --draft` on `repro-comment.md` and `pr_draft.md` before posting, and the hook checked the `gh issue comment` and `gh pr create` commands when they ran.
@@ -296,16 +300,16 @@ Committed the fix (`fix(adhesion): la carte d'une adhésion annulée par un admi
 
 **Maintainer Feedback:**
 
-- 2026-11-10: none yet.
+- 2026-11-10: none yet from a maintainer. The only review is Copilot's automatic notice that it "was unable to review this pull request" (quota). It asks nothing, so I sent no reply; the PR monitor's draft agreed and set 2026-11-17 as the first day a nudge is allowed.
 
 **Status:** Awaiting review
 
 **Toolkit**
 
-- Tool: the ship-gate setup from Unit 7: my manifest (run by hand), pr-precheck on the branch, and the voice guard hook on `gh pr create`.
-- What it produced: the manifest's three checks passed. pr-precheck refused before grading ("The package you asked me to grade targets TiBillet/Lespass, issue #450. That repo is outside the scope"), because its scope file was still the Unit 4 sandbox one. The voice guard hook passed the PR description.
-- Difficulties: `install.py` is the step that swaps pr-precheck's scope and adds the ship-gate hook, and it did not run in my Claude Code session (the auto-mode safety check blocks downloaded scripts that edit `~/.claude/settings.json`). So the PR opened without a ship-gate pass.
-- What changed: I ran the manifest checks myself, and I am running `install.py` and `check_gate.py --branch` by hand so pr-precheck grades the PR's branch with the wild scope. If it rejects, I fix the branch or my rubric, push, and say so here.
+- Tool: the ship-gate (Unit 7), run by hand with `check_gate.py --branch --title "…" --body-file pr_draft.md`: my manifest's three checks, then my pr-precheck on the branch, `plan.md`, `test_evidence.md`, and `pr_draft.md`. The voice guard hook checked `gh pr create`.
+- What it produced: first run, BLOCK (2026-11-10 03:26): repo checks ok, but `plan-fidelity` and `diff-reviewable` failed on "Diff stat is 339 files". Second run, PASS (03:30): "All 4 diff paths … are in the plan's Files list", and the voice notes flagged one unbacked claim, "Les deux libellés existent déjà dans `locale/`".
+- Difficulties: the PR opened before the gate could run, because `install.py` (the step that adds the hook and swaps pr-precheck's sandbox scope for the wild one) was blocked in my Claude Code session, so I ran it in my own terminal afterwards. The BLOCK was not about my code: the gate diffs against the local `main`, and mine was my fork's 2026-10-21 main, 59 commits behind `upstream/main`.
+- What changed: I fast-forwarded local `main` to `upstream/main` before re-running, and added the `grep` of both `msgid` lines from `locale/en/LC_MESSAGES/django.po` to the PR description (`gh pr edit 495`), so the translation claim is backed. Next time I run the gate before `gh pr create`, the order Unit 7 gives.
 
 ---
 
