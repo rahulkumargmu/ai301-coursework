@@ -91,3 +91,77 @@ Surfaced by: query 1 (bug+gfi). Sunk by: `scope-fits` — the opener (a CONTRIBU
   }
 ]
 ```
+
+## Regrade: 2026-10-21 (claude -p "issue-scout: grade" the two Scan 1 accepts, model sonnet)
+
+Direct grade of last week's two accepts. No new search. `scope-fits` had already been replaced by `scope-feasible`.
+
+**TiBillet/Lespass#450: accept. Difficulty: moderate.** One membership-cancel display bug. The issue does not name a file. The cancel path is in `BaseBillet/views.py` and the date is rendered in a template. Issue text and project comments are in French. `unclaimed` passes: no assignee, no open PR, zero comments. The issue author pushed `[Fix issue #450]` commits on 2026-09-30 that are already on main, and a `fix-in-V2` label was added then removed on 2026-10-12. Those commits are not a claim comment. I have not run the app, so I do not know if the bug is still there.
+
+**workfloworchestrator/orchestrator-core#1872: reject**, sunk by `unclaimed`. nightcityblade asked to take it on 2026-10-15, and merged PR #2021 closed the issue the same day. Not available to claim.
+
+```json
+[
+  {
+    "item": "https://github.com/TiBillet/Lespass/issues/450",
+    "checks": [
+      {"name": "maintainer-active", "grade": "pass", "evidence": "archived: false; human commits to main on 2026-10-21 (Nasjoe) and 2026-10-20"},
+      {"name": "repo-in-use", "grade": "pass", "evidence": "latest release none, but last push 2026-10-21T09:21Z and a default-branch commit the same day"},
+      {"name": "scope-feasible", "grade": "pass", "evidence": "One bounded bug: cancel a membership from the admin and the deadline display still shows a future date"},
+      {"name": "unclaimed", "grade": "pass", "evidence": "assignees []; no open linked PR; 0 comments"},
+      {"name": "ai-policy", "grade": "pass", "evidence": "Read GUIDELINES.md, api_v2/GUIDELINES.md, README.md, README.en.md, CODE_OF_CONDUCT.md; no AI ban"},
+      {"name": "good-first-issue-signal", "grade": "pass", "evidence": "Label good first issue"}
+    ],
+    "verdict": "accept"
+  },
+  {
+    "item": "https://github.com/workfloworchestrator/orchestrator-core/issues/1872",
+    "checks": [
+      {"name": "maintainer-active", "grade": "pass", "evidence": "archived: false; human commits to main on 2026-10-21"},
+      {"name": "repo-in-use", "grade": "pass", "evidence": "release 5.5.0 on 2026-10-14; last push 2026-10-21"},
+      {"name": "scope-feasible", "grade": "pass", "evidence": "One fix: move the ALL_SCHEDULERS warning into __getattr__ and correct the removal version"},
+      {"name": "unclaimed", "grade": "fail", "evidence": "nightcityblade claimed it 2026-10-15; merged PR #2021 closed the issue"},
+      {"name": "ai-policy", "grade": "pass", "evidence": "Read CLAUDE.md and docs/contributing/guidelines.md; no AI ban"},
+      {"name": "good-first-issue-signal", "grade": "pass", "evidence": "Label good first issue"}
+    ],
+    "verdict": "reject"
+  }
+]
+```
+
+## Regrade: 2026-10-21 (claude -p "issue-scout: grade" the two Scan 1 accepts, model sonnet)
+
+Direct grade of last week's two accepts. No new search. `scope-fits` had already been replaced by `scope-feasible`.
+
+**TiBillet/Lespass#450: accept. Difficulty: moderate.** One membership-cancel display bug. The issue does not name a file. The cancel path is in `BaseBillet/views.py` and the date is rendered in a template. Issue text and project comments are in French. `unclaimed` passes: no assignee, no open PR, zero comments. The issue author pushed `[Fix issue #450]` commits on 2026-09-30 that are already on main, and a `fix-in-V2` label was added then removed on 2026-10-12. Those commits are not a claim comment. I have not run the app, so I do not know if the bug is still there.
+
+**workfloworchestrator/orchestrator-core#1872: reject**, sunk by `unclaimed`. nightcityblade asked to take it on 2026-10-15, and merged PR #2021 closed the issue the same day. Not available to claim.
+
+```json
+[
+  {
+    "item": "https://github.com/TiBillet/Lespass/issues/450",
+    "checks": [
+      {"name": "maintainer-active", "grade": "pass", "evidence": "archived: false; human commits to main on 2026-10-21 (Nasjoe) and 2026-10-20"},
+      {"name": "repo-in-use", "grade": "pass", "evidence": "latest release none, but last push 2026-10-21T09:21Z and a default-branch commit the same day"},
+      {"name": "scope-feasible", "grade": "pass", "evidence": "One bounded bug: cancel a membership from the admin and the deadline display still shows a future date"},
+      {"name": "unclaimed", "grade": "pass", "evidence": "assignees []; no open linked PR; 0 comments"},
+      {"name": "ai-policy", "grade": "pass", "evidence": "Read GUIDELINES.md, api_v2/GUIDELINES.md, README.md, README.en.md, CODE_OF_CONDUCT.md; no AI ban"},
+      {"name": "good-first-issue-signal", "grade": "pass", "evidence": "Label good first issue"}
+    ],
+    "verdict": "accept"
+  },
+  {
+    "item": "https://github.com/workfloworchestrator/orchestrator-core/issues/1872",
+    "checks": [
+      {"name": "maintainer-active", "grade": "pass", "evidence": "archived: false; human commits to main on 2026-10-21"},
+      {"name": "repo-in-use", "grade": "pass", "evidence": "release 5.5.0 on 2026-10-14; last push 2026-10-21"},
+      {"name": "scope-feasible", "grade": "pass", "evidence": "One fix: move the ALL_SCHEDULERS warning into __getattr__ and correct the removal version"},
+      {"name": "unclaimed", "grade": "fail", "evidence": "nightcityblade claimed it 2026-10-15; merged PR #2021 closed the issue"},
+      {"name": "ai-policy", "grade": "pass", "evidence": "Read CLAUDE.md and docs/contributing/guidelines.md; no AI ban"},
+      {"name": "good-first-issue-signal", "grade": "pass", "evidence": "Label good first issue"}
+    ],
+    "verdict": "reject"
+  }
+]
+```
